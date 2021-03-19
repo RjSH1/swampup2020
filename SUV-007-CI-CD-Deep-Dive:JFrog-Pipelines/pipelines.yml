@@ -10,45 +10,45 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker
-      imageName: ${(echo ${int_artifactory_url}|awk -F '/' '{print $3}')}/docker/swampup_docker_app_demo #docker.artifactory-unified.soleng-us.jfrog.team/swampup_docker_app_demo
+      sourceRepository: docker_local
+      imageName: vjnpipelines.jfrog.io/swampup-docker-local/dbp  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY # <-- replace with your artifactory integration
       buildName: SampleApp
       buildNumber: 1
   - name: myPromotedBuildInfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY # <-- replace with your artifactory integration
       buildName: SampleApp
       buildNumber: 1
   - name: myHelmBuildInfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY # <-- replace with your artifactory integration
       buildName: SampleApp
       buildNumber: 1
   - name: myPromotedHelmBuildInfo
     type: BuildInfo
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY  # <-- replace with your artifactory integration
       buildName: SampleApp
       buildNumber: 1
   - name: MyHelmChart
     type: HelmChart
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY  # <-- replace with your artifactory integration
       repository: helm-local
       chart: docker-app-chart
       version: '0.1.${run_number}'
   - name: MyPromotedHelmChart
     type: HelmChart
     configuration:
-      sourceArtifactory: artifactory
+      sourceArtifactory: ARTIFACTORY  # <-- replace with your artifactory integration
       repository: helm-prod-local
       chart: docker-app-chart
       version: '0.1.${run_number}'
