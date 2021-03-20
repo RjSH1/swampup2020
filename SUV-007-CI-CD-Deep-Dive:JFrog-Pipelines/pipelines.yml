@@ -10,7 +10,7 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker_local
+      sourceRepository: docker
       imageName: vjnpipelines.jfrog.io/swampup-docker-local/dbp  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
@@ -42,14 +42,14 @@ resources:
     type: HelmChart
     configuration:
       sourceArtifactory: ARTIFACTORY  # <-- replace with your artifactory integration
-      repository: helm-local
+      repository: helm-local # <-- Create this Repository if it does not exist already
       chart: docker-app-chart
       version: '0.1.${run_number}'
   - name: MyPromotedHelmChart
     type: HelmChart
     configuration:
       sourceArtifactory: ARTIFACTORY  # <-- replace with your artifactory integration
-      repository: helm-prod-local
+      repository: helm-prod-local # <-- Create this Repository if it does not exist already
       chart: docker-app-chart
       version: '0.1.${run_number}'
   - name: myReleaseBundle
@@ -92,7 +92,7 @@ pipelines:
             - name: myGitRepo
               trigger: false
           integrations:
-            - name: artifactory
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
           runtime:
             type: image
             image:
@@ -120,7 +120,7 @@ pipelines:
             - name: myGitRepo
               trigger: false
           integrations:
-            - name: artifactory
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
         execution:
           onStart:
             - add_pipeline_variables previous_frontend_ver=${my_env_var}
@@ -132,7 +132,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: artifactory
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
       - name: bld_docker_app
         type: DockerBuild
         configuration:
@@ -142,7 +142,7 @@ pipelines:
           dockerImageName: ${ArtIP}/docker/swampup_docker_app_demo
           dockerImageTag: '${run_number}'
           integrations:
-            - name: artifactory
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
           inputResources:
             - name: myGitRepo
               trigger: false
@@ -172,7 +172,7 @@ pipelines:
           forceXrayScan: true
           autoPublishBuildInfo: true
           integrations:
-            - name: artifactory
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
           inputSteps:
             - name: bld_docker_app
           outputResources:
