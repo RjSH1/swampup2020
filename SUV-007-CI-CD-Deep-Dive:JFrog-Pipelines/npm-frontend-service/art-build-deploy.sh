@@ -19,7 +19,7 @@ echo "email = youremail@email.com" >> ~/.npmrc
 npm config set registry http://${artiUrl}:8081/artifactory/api/npm/npm-dev-local/
 
 # remove existing artifact
-curl -uadmin:password -XDELETE http://${artiUrl}:80/artifactory/npm-dev-local/frontend/-/frontend-3.0.0.tgz
+curl -uadmin:password -XDELETE http://${artiUrl}:8082/artifactory/npm-dev-local/frontend/-/frontend-3.0.0.tgz
 
 # build and publish
 npm i && npm run build &&  npm publish
