@@ -10,8 +10,8 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker_local
-      imageName: 35.243.193.12:8082/swampup-docker-dev-local/dbp  # <-- name of your image path and name
+      sourceRepository: docker
+      imageName: 35.243.193.12:8082/docker/swampup_docker_app_demo  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
@@ -139,7 +139,7 @@ pipelines:
           affinityGroup: fmkGroup
           dockerFileLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/
           dockerFileName: Dockerfile
-          dockerImageName: ${ArtIP}/docker/swampup_docker_app_demo
+          dockerImageName: ${ArtIP}:8082/docker/swampup_docker_app_demo
           dockerImageTag: '${run_number}'
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
@@ -153,7 +153,7 @@ pipelines:
             - name: publish_frontend #bld_frontend
         execution:
           onStart:
-            - add_run_variables url=${ArtIP}/docker
+            - add_run_variables url=${ArtIP}:8081/docker
             - add_run_variables old=docker.artifactory
             - echo $url
             - sed -i "s|$old|$url|g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
