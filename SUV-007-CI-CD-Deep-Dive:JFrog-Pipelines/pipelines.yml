@@ -115,7 +115,7 @@ pipelines:
         configuration:
           npmArgs: --no-progress --no-audit
           sourceLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/npm-frontend-service
-          repositoryName: npm
+          repositoryName: npm <-- create this REMOTE (On Demand Proxy Cache) repository as a Pre-requisite before running this pipeline
           inputResources:
             - name: myGitRepo
               trigger: false
@@ -128,7 +128,7 @@ pipelines:
       - name: publish_frontend
         type: NpmPublish
         configuration:
-          repositoryName: npm
+          repositoryName: npm-dev-local # <-- create this LOCAL repository as a Pre-requisite before running this pipeline
           inputSteps:
             - name: bld_frontend
           integrations:
