@@ -11,7 +11,7 @@ resources:
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
       sourceRepository: docker
-      imageName: vjnpipelines.jfrog.io/swampup-docker-local/dbp  # <-- name of your image path and name
+      imageName: 35.243.193.12:8082/soleng-docker-dev-local/dbp  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
