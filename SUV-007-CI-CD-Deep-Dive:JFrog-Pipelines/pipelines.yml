@@ -115,7 +115,7 @@ pipelines:
         configuration:
           npmArgs: --no-progress --no-audit
           sourceLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/npm-frontend-service
-          repositoryName: npm <-- create this REMOTE (On Demand Proxy Cache) repository as a Pre-requisite before running this pipeline
+          repositoryName: npm # <-- create this REMOTE (On Demand Proxy Cache) repository as a Pre-requisite before running this pipeline
           inputResources:
             - name: myGitRepo
               trigger: false
