@@ -157,7 +157,7 @@ pipelines:
             - add_run_variables old=docker.artifactory
             - echo $url
             - sed -i "s|$old|$url|g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
-            - sed -i "s/artifactory-unified.soleng-us.jfrog.team/${ArtIP}/" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
+            - sed -i "s/artifactory-unified.soleng-us.jfrog.team/${ArtIP}:8081/" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
             - sed -i "s/frontend-3.0.0/frontend-$previous_frontend_ver/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
             - sed -i "s/1.0.0/$previous_backend_ver/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
             - cat $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
