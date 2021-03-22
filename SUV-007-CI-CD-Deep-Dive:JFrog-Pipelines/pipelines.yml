@@ -10,8 +10,8 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker
-      imageName: 35.243.193.12:8082/soleng-docker-dev-local/dbp  # <-- name of your image path and name
+      sourceRepository: docker_local
+      imageName: 35.243.193.12:8082/swampup-docker-dev-local/dbp  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
@@ -55,19 +55,19 @@ resources:
   - name: myReleaseBundle
     type: ReleaseBundle
     configuration:
-      sourceDistribution: distribution
+      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
       name: swampup_rb
       version: v1.0.0
   - name: mySignedReleaseBundle
     type: ReleaseBundle
     configuration:
-      sourceDistribution: distribution
+      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
       name: swampup_rb
       version: v1.0.0
   - name: myDistributionRules
     type: DistributionRule
     configuration:
-      sourceDistribution: distribution
+      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
       serviceName: "Edge*"
       siteName: "Edge*"
       cityName: "*"
