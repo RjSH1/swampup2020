@@ -14,9 +14,9 @@ fi
 artiUrl="$1"
 
 #setup npm locally
-curl -u admin:password http://${artiUrl}:80/artifactory/api/npm/auth > ~/.npmrc
+curl -u admin:password http://${artiUrl}:8081/artifactory/api/npm/auth > ~/.npmrc
 echo "email = youremail@email.com" >> ~/.npmrc
-npm config set registry http://${artiUrl}/artifactory/api/npm/npm-dev-local/
+npm config set registry http://${artiUrl}:8081/artifactory/api/npm/npm-dev-local/
 
 # remove existing artifact
 curl -uadmin:password -XDELETE http://${artiUrl}:80/artifactory/npm-dev-local/frontend/-/frontend-3.0.0.tgz
