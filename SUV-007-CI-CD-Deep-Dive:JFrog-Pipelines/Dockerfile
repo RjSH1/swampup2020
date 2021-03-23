@@ -1,7 +1,4 @@
-#Download image from artifactory
-ARG REGISTRY=docker.artifactory
-#FROM openjdk:11-jdk
-FROM $REGISTRY/openjdk:11-jdk
+FROM openjdk:11-jdk
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y nodejs \
@@ -10,8 +7,8 @@ RUN apt-get update && apt-get upgrade -y && \
 WORKDIR /app
 
 #Define ARG Again -ARG variables declared before the first FROM need to be declered again
-ARG REGISTRY=http://artifactory-unified.soleng-us.jfrog.team/artifactory
-MAINTAINER Shani Levy
+ARG REGISTRY=http://35.243.193.12:8082/artifactory
+MAINTAINER Colathur Vijayan
 
 # Download artifacts from Artifactory
 RUN curl $REGISTRY/libs-release-local/com/jfrog/backend/1.0.0/backend-1.0.0.jar --output server1.jar
