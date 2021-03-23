@@ -10,7 +10,7 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker_local
+      sourceRepository: docker
       imageName: 35.243.193.12:8082/docker/swampup_docker_app_demo  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
