@@ -167,7 +167,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: fmkGroup
-          targetRepository: docker-dev-local
+          targetRepository: docker
           forceXrayScan: false
           autoPublishBuildInfo: false
           integrations:
