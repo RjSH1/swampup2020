@@ -169,7 +169,7 @@ pipelines:
         configuration:
           affinityGroup: fmkGroup
           targetRepository: docker
-          forceXrayScan: true
+          forceXrayScan: false
           autoPublishBuildInfo: true
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
