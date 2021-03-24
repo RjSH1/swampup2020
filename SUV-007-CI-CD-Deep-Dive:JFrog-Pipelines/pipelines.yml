@@ -5,7 +5,7 @@ resources:
       gitProvider: GITHUB # <-- name of your GitHub Integration in Pipelines
       path: colathurv/swampup2020 # <-- name of the GitHub Repository name in which this pipeline DSL is located
       branches:
-        include: master
+        include: ver1 # <-- For our use case we assume that all code artifacts are in the same branch, as the pipeline DSL. Does not have to be the case, in general.
   - name: DockerAppImage
     type: Image
     configuration:
@@ -74,12 +74,12 @@ resources:
       countryCodes:
         - "*"
 pipelines:
-  - name: swampup_2021_docker_app_pipeline
+  - name: swampup_2021_docker_app_pipeline # <-- Name of the pipeline in My Pipelines
     configuration:
       environmentVariables:
         readOnly:
            my_env_var: '1.0.$run_number'
-           ArtIP: 35.243.193.12
+           ArtIP: 35.243.193.12 # <-- The IP of the Artifactory Instance
     steps:
       - name: bld_backend
         type: MvnBuild
@@ -139,7 +139,7 @@ pipelines:
           affinityGroup: fmkGroup
           dockerFileLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/
           dockerFileName: Dockerfile
-          dockerImageName: 35.243.193.12:8082/docker/swampup_docker_app_demo
+          dockerImageName: 35.243.193.12:8082/docker/swampup_docker_app_demo # <-- The Docker Image Name should include the Server URL and Port
           dockerImageTag: '${run_number}'
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
@@ -167,7 +167,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: fmkGroup
-          targetRepository: docker-dev-local
+          targetRepository: docker-dev-local # <-- create this LOCAL repository as a Pre-requisite before running this pipeline
           forceXrayScan: false
           autoPublishBuildInfo: false
           integrations:
