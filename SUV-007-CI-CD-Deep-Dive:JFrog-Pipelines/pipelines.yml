@@ -115,6 +115,9 @@ pipelines:
           npmArgs: --no-progress --no-audit
           sourceLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/npm-frontend-service
           repositoryName: npm # <-- create a Virtual Repo called npm on top of a remote repository called npm-remote and a local repository called npm-dev-local
+          inputResources:
+            - name: myGitRepo
+              trigger: false
           inputSteps:
             - name: bld_frontend
           integrations:
