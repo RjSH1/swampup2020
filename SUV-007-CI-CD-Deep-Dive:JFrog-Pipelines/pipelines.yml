@@ -169,7 +169,7 @@ pipelines:
           affinityGroup: fmkGroup
           targetRepository: docker-dev-local # <-- create this LOCAL repository as a Pre-requisite before running this pipeline
           forceXrayScan: false
-          autoPublishBuildInfo: false
+          autoPublishBuildInfo: true
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
           inputSteps:
