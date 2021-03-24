@@ -120,7 +120,7 @@ pipelines:
             - name: myGitRepo
               trigger: false
           inputSteps:
-            - name: bld_frontend
+            - name: bld_backend
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
         execution:
