@@ -90,7 +90,6 @@ pipelines:
           configFileName: mvn-art-config
           inputResources:
             - name: myGitRepo
-              # trigger: false
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
           runtime:
