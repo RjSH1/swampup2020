@@ -1,5 +1,6 @@
-#Download image from artifactory. <-- Change IP to that of your Artifactory Server
-ARG REGISTRY=35.243.193.12:8082/docker
+#Download image from artifactory
+ARG REGISTRY=docker.artifactory
+
 FROM $REGISTRY/docker/openjdk:11-jdk
 
 RUN apt-get update && apt-get upgrade -y && \
