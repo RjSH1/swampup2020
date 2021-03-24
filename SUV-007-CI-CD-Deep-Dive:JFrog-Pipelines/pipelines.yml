@@ -10,7 +10,7 @@ resources:
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
-      sourceRepository: docker
+      sourceRepository: docker # <-- create 3 repositories - docker-dev-local (Local), docker-remote(Remote) and docker(virtual) which aggregates these 2, with default deployment = docker-dev-local  
       imageName: 35.243.193.12:8082/docker/swampup_docker_app_demo  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
