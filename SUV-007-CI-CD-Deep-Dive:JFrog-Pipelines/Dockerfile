@@ -1,7 +1,5 @@
-#Download image from artifactory
-ARG REGISTRY=docker.artifactory
-
-FROM $REGISTRY/openjdk:11-jdk
+#Download image from artifactory. <-- Change IP to that of your Artifactory Server
+FROM 35.243.193.12:8082/docker/openjdk:11-jdk
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y nodejs \
@@ -9,7 +7,7 @@ RUN apt-get update && apt-get upgrade -y && \
 
 WORKDIR /app
 
-#Define ARG Again -ARG variables declared before the first FROM need to be declered again
+#Download image from artifactory. <-- Change IP to that of your Artifactory Server
 ARG REGISTRY=http://35.243.193.12:8082/artifactory
 MAINTAINER Colathur Vijayan
 
