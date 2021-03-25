@@ -52,27 +52,7 @@ resources:
       repository: helm-prod-local # <-- Create this Repository if it does not exist already
       chart: docker-app-chart
       version: '0.1.${run_number}'
-  - name: myReleaseBundle
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
-      name: swampup_rb
-      version: v1.0.0
-  - name: mySignedReleaseBundle
-    type: ReleaseBundle
-    configuration:
-      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
-      name: swampup_rb
-      version: v1.0.0
-  - name: myDistributionRules
-    type: DistributionRule
-    configuration:
-      sourceDistribution: DISTRIBUTION # <-- replace with your distribution integration
-      serviceName: "Edge*"
-      siteName: "Edge*"
-      cityName: "*"
-      countryCodes:
-        - "*"
+ 
 pipelines:
   - name: swampup_2021_docker_app_pipeline # <-- Name of the pipeline in My Pipelines
     configuration:
