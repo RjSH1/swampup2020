@@ -10,7 +10,7 @@ RUN apt-get update && apt-get upgrade -y && \
 WORKDIR /app
 
 # <-- Change IP to that of your Artifactory Server
-ARG REGISTRY=http://35.243.193.12:8082/artifactory
+ARG REGISTRY=http://vjnpipelines.jfrog.io/artifactory
 MAINTAINER Colathur Vijayan
 
 # Download artifacts from Artifactory <-- Change IP to that of your Artifactory Server
