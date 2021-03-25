@@ -135,7 +135,7 @@ pipelines:
             - name: publish_frontend #bld_frontend
         execution:
           onStart: 
-            - jfrog rt docker-pull vjnpipelines.jfrog.io/openjdk:11-jdk docker-local
+            - jfrog rt docker-pull vjnpipelines.jfrog.io/docker/openjdk:11-jdk docker-local
             - add_run_variables url=vjnpipelines.jfrog.io/docker
             - add_run_variables old=docker.artifactory
             - echo $url
