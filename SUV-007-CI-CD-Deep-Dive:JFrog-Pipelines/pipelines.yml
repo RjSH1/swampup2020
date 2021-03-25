@@ -125,6 +125,7 @@ pipelines:
           dockerImageTag: '${run_number}'
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
+            - name: DOCKER_ART
           inputResources:
             - name: myGitRepo
               trigger: false
@@ -135,7 +136,6 @@ pipelines:
             - name: publish_frontend #bld_frontend
         execution:
           onStart: 
-            - jfrog rt docker-pull vjnpipelines.jfrog.io/docker/openjdk:11-jdk docker
             - add_run_variables url=vjnpipelines.jfrog.io/docker
             - add_run_variables old=docker.artifactory
             - echo $url
