@@ -5,13 +5,13 @@ resources:
       gitProvider: GITHUB # <-- name of your GitHub Integration in Pipelines
       path: colathurv/swampup2020 # <-- name of the GitHub Repository name in which this pipeline DSL is located
       branches:
-        include: ver1 # <-- For our use case we assume that all code artifacts are in the same branch, as the pipeline DSL. Does not have to be the case, in general.
+        include: saas # <-- For our use case we assume that all code artifacts are in the same branch, as the pipeline DSL. Does not have to be the case, in general.
   - name: DockerAppImage
     type: Image
     configuration:
       registry: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
       sourceRepository: docker # <-- create 3 repositories - docker-dev-local (Local), docker-remote(Remote) and docker(virtual) which aggregates these 2, with default deployment = docker-dev-local  
-      imageName: 35.243.193.12:8082/docker/swampup_docker_app_demo  # <-- name of your image path and name
+      imageName: vjnpipelines.jfrog.io/docker/swampup_docker_app_demo  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
@@ -141,7 +141,7 @@ pipelines:
           affinityGroup: fmkGroup
           dockerFileLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/
           dockerFileName: Dockerfile
-          dockerImageName: 35.243.193.12:8082/docker/swampup_docker_app_demo # <-- The Docker Image Name should include the Server URL and Port
+          dockerImageName: vjnpipelines.jfrog.io/docker/swampup_docker_app_demo # <-- The Docker Image Name should include the Server URL and Port
           dockerImageTag: '${run_number}'
           integrations:
             - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
@@ -155,7 +155,7 @@ pipelines:
             - name: publish_frontend #bld_frontend
         execution:
           onStart: 
-            - add_run_variables url=${ArtIP}:8082/docker
+            - add_run_variables url=vjnpipelines.jfrog.io/docker
             - add_run_variables old=docker.artifactory
             - echo $url
             - sed -i "s|$old|$url|g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
