@@ -136,7 +136,7 @@ pipelines:
             - name: publish_frontend #bld_frontend
         execution:
           onStart: 
-            - add_run_variables url=vjnpipelines.jfrog.io/docker
+            - add_run_variables url=vjnpipelines.jfrog.io
             - add_run_variables old=docker.artifactory
             - echo $url
             - sed -i "s|$old|$url|g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
