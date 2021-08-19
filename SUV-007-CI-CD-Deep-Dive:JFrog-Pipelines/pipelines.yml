@@ -114,7 +114,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
+            - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
       - name: bld_docker_app
         type: DockerBuild
         configuration:
@@ -125,7 +125,7 @@ pipelines:
           dockerImageTag: '${run_number}'
           integrations:
             - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
-            - name: DOCKER_ART
+            #- name: DOCKER_ART
           inputResources:
             - name: myGitRepo
               trigger: false
