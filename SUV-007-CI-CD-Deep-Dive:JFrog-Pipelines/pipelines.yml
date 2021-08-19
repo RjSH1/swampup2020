@@ -1,0 +1,161 @@
+resources:
+  - name: myGitRepo
+    type: GitRepo
+    configuration:
+      gitProvider: myGithub # <-- name of your GitHub Integration in Pipelines
+      path: RjSH1/swampup2020 # <-- name of the GitHub Repository name in which this pipeline DSL is located
+      branches:
+        include: saas # <-- For our use case we assume that all code artifacts are in the same branch, as the pipeline DSL. Does not have to be the case, in general.
+  - name: DockerAppImage
+    type: Image
+    configuration:
+      registry: myArtifactory # <-- name of your Artifactory Integration in Pipelines
+      sourceRepository: docker # <-- create 3 repositories - docker-dev-local (Local), docker-remote(Remote) and docker(virtual) which aggregates these 2, with default deployment = docker-dev-local  
+      imageName: vjnpipelines.jfrog.io/docker/swampup_docker_app_demo  # <-- name of your image path and name
+      imageTag: '${run_number}'
+      autoPull: true
+  - name: myBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: myArtifactory # <-- replace with your artifactory integration
+      buildName: SampleApp
+      buildNumber: 1
+  - name: myPromotedBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: myArtifactory # <-- replace with your artifactory integration
+      buildName: SampleApp
+      buildNumber: 1
+  - name: myHelmBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: myArtifactory # <-- replace with your artifactory integration
+      buildName: SampleApp
+      buildNumber: 1
+  - name: myPromotedHelmBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: myArtifactory  # <-- replace with your artifactory integration
+      buildName: SampleApp
+      buildNumber: 1
+  - name: MyHelmChart
+    type: HelmChart
+    configuration:
+      sourceArtifactory: myArtifactory  # <-- replace with your artifactory integration
+      repository: helm-local # <-- Create this Repository if it does not exist already
+      chart: docker-app-chart
+      version: '0.1.${run_number}'
+  - name: MyPromotedHelmChart
+    type: HelmChart
+    configuration:
+      sourceArtifactory: myArtifactory  # <-- replace with your artifactory integration
+      repository: helm-prod-local # <-- Create this Repository if it does not exist already
+      chart: docker-app-chart
+      version: '0.1.${run_number}'
+ 
+pipelines:
+  - name: swampup_2021_docker_app_pipeline # <-- Name of the pipeline in My Pipelines
+    configuration:
+      environmentVariables:
+        readOnly:
+           my_env_var: '1.0.$run_number'
+           ArtIP: 35.243.193.12 # <-- The IP of the Artifactory Instance
+    steps:
+      - name: bld_backend
+        type: MvnBuild
+        configuration:
+          sourceLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend-service
+          mvnCommand: clean install -ntp
+          configFileLocation: .
+          configFileName: mvn-art-config
+          inputResources:
+            - name: myGitRepo
+              trigger: false
+          integrations:
+            - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
+          runtime:
+            type: image
+            image:
+              auto:
+                language: java
+                versions:
+                  - "11"
+        execution:
+          onStart:
+            - javac -version
+            - mvn --version
+            - add_pipeline_variables previous_backend_ver=${my_env_var}
+            - sed -ie 's/Default-Server/ARTIFACTORY/g' $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend-service/mvn-art-config
+            - sed -ie "s/1.0.0/$my_env_var/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend-service/pom.xml
+          onComplete:
+            - echo $run_var
+            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
+      - name: bld_frontend
+        type: NpmBuild
+        configuration:
+          npmArgs: --no-progress --no-audit
+          sourceLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/npm-frontend-service
+          repositoryName: npm # <-- create a Virtual Repo called npm on top of a remote repository called npm-remote and a local repository called npm-dev-local
+          inputResources:
+            - name: myGitRepo
+              trigger: false
+          inputSteps:
+            - name: bld_backend
+          integrations:
+            - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
+        execution:
+          onStart:
+            - add_pipeline_variables previous_frontend_ver=${my_env_var}
+            - sed -i "s/3.0.0/$my_env_var/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/npm-frontend-service/package.json     
+      - name: publish_frontend
+        type: NpmPublish
+        configuration:
+          repositoryName: npm-dev-local # <-- create this LOCAL repository as a Pre-requisite before running this pipeline
+          inputSteps:
+            - name: bld_frontend
+          integrations:
+            - name: ARTIFACTORY # <-- name of your Artifactory Integration in Pipelines
+      - name: bld_docker_app
+        type: DockerBuild
+        configuration:
+          affinityGroup: fmkGroup
+          dockerFileLocation: SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/
+          dockerFileName: Dockerfile
+          dockerImageName: vjnpipelines.jfrog.io/docker/swampup_docker_app_demo # <-- The Docker Image Name should include the Server URL and Port
+          dockerImageTag: '${run_number}'
+          integrations:
+            - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
+            - name: DOCKER_ART
+          inputResources:
+            - name: myGitRepo
+              trigger: false
+          outputResources:
+            - name: DockerAppImage
+          inputSteps:
+            - name: bld_backend
+            - name: publish_frontend #bld_frontend
+        execution:
+          onStart: 
+            - add_run_variables url=vjnpipelines.jfrog.io
+            - add_run_variables old=docker.artifactory
+            - echo $url
+            - sed -i "s|$old|$url|g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
+            - sed -i "s/frontend-3.0.0/frontend-$previous_frontend_ver/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
+            - sed -i "s/1.0.0/$previous_backend_ver/g" $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
+            - cat $res_myGitRepo_resourcePath/SUV-007-CI-CD-Deep-Dive:JFrog-Pipelines/Dockerfile
+          onComplete:
+            - echo $step_env_var2
+            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
+      - name: push_docker_app
+        type: DockerPush
+        configuration:
+          affinityGroup: fmkGroup
+          targetRepository: docker-dev-local # <-- create this LOCAL repository as a Pre-requisite before running this pipeline
+          forceXrayScan: false
+          autoPublishBuildInfo: true
+          integrations:
+            - name: myArtifactory # <-- name of your Artifactory Integration in Pipelines
+          inputSteps:
+            - name: bld_docker_app
+          outputResources:
+            - name: myBuildInfo
