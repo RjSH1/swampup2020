@@ -5,7 +5,7 @@
             <properties>
                 <username>admin</username>
                 <password>password</password>
-                <artifactoryUrl>http://localhost:8081/artifactory</artifactoryUrl>
+                <artifactoryUrl>https://icarusaug162021.jfrogdev.org/artifactory</artifactoryUrl>
             </properties>
         </profile>
     </profiles>
