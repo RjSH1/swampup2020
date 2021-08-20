@@ -11,7 +11,7 @@ resources:
     configuration:
       registry: myArtifactory # <-- name of your Artifactory Integration in Pipelines
       sourceRepository: docker # <-- create 3 repositories - docker-dev-local (Local), docker-remote(Remote) and docker(virtual) which aggregates these 2, with default deployment = docker-dev-local  
-      imageName: vjnpipelines.jfrog.io/docker/swampup_docker_app_demo  # <-- name of your image path and name
+      imageName: icarusaug162021.jfrogdev.org/docker/swampup_docker_app_demo  # <-- name of your image path and name
       imageTag: '${run_number}'
       autoPull: true
   - name: myBuildInfo
